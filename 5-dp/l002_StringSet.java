@@ -35,9 +35,128 @@ public class l002_StringSet {
         return dp[SI][EI];
     }
 
-    public int longestPalindromeSubseq(String s) {
+    public static String lpss_ReverseEngi(String s, int si, int ei, int[][] dp) {
+        if (si >= ei) {
+            return si == ei ? (s.charAt(si) + "") : "";
+        }
+
+        if (s.charAt(si) == s.charAt(ei))
+            return s.charAt(si) + lpss_ReverseEngi(s, si + 1, ei - 1, dp) + s.charAt(si);
+        else if (dp[si + 1][ei] > dp[si][ei - 1])
+            return lpss_ReverseEngi(s, si + 1, ei, dp);
+        else
+            return lpss_ReverseEngi(s, si, ei - 1, dp);
+    }
+
+    public static void longestPalindromeSubseq(String s) {
         int n = s.length();
         int[][] dp = new int[n][n];
-        return lpss(s, 0, n - 1, dp);
+        int ans = lpss_DP(s, 0, n - 1, dp);
+
+        display2D(dp);
+        System.out.println(lpss_ReverseEngi(s, 0, n - 1, dp));
     }
+
+    // longest Common Subsequence
+    // 1143
+    public static int lcss(String str1, int n, String str2, int m, int[][] dp) {
+        if (n == 0 || m == 0) {
+            return dp[n][m] = 0;
+        }
+
+        if (dp[n][m] != -1)
+            return dp[n][m];
+
+        if (str1.charAt(n - 1) == str2.charAt(m - 1))
+            return dp[n][m] = lcss(str1, n - 1, str2, m - 1, dp) + 1;
+        else
+            return dp[n][m] = Math.max(lcss(str1, n, str2, m - 1, dp), lcss(str1, n - 1, str2, m, dp));
+    }
+
+    public static int lcss_Dp(String str1, int N, String str2, int M, int[][] dp) {
+        for (int n = 0; n <= N; n++) {
+            for (int m = 0; m <= M; m++) {
+                if (n == 0 || m == 0) {
+                    dp[n][m] = 0;
+                    continue;
+                }
+
+                if (str1.charAt(n - 1) == str2.charAt(m - 1))
+                    dp[n][m] = dp[n - 1][m - 1] + 1;
+                else
+                    dp[n][m] = Math.max(dp[n][m - 1], dp[n - 1][m]);
+            }
+        }
+
+        return dp[N][M];
+    }
+
+    public static int longestCommonSubsequence(String text1, String text2) {
+        int n = text1.length(), m = text2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        // for (int[] d : dp)
+        // Arrays.fill(d, -1);
+        int ans = lcss_Dp(text1, n, text2, m, dp);
+        display2D(dp);
+        return ans;
+    }
+
+    // longest Palindromic Substring
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+
+        int len = 0, si = 0;
+
+        for (int gap = 0; gap < n; gap++) {
+            for (int i = 0, j = gap; j < n; j++, i++) {
+                if (gap == 0)
+                    dp[i][j] = true;
+                else if (gap == 1 && s.charAt(i) == s.charAt(j))
+                    dp[i][j] = true;
+                else
+                    dp[i][j] = s.charAt(i) == s.charAt(j) && dp[i + 1][j - 1];
+
+                if (dp[i][j] && j - i + 1 > len) {
+                    len = j - i + 1;
+                    si = i;
+                }
+            }
+        }
+
+        return s.substring(si, si + len);
+    }
+
+    // longest Common Substring ??
+
+    public static void main(String[] args) {
+        longestCommonSubsequence("abcde", "ace");
+    }
+
+    public static int LCSS(String s1, String s2) {
+        int N = s1.length(), M = s2.length();
+        int[][] dp = new int[N + 1][M + 1];
+        for (int n = 0; n <= N; n++) {
+            for (int m = 0; m <= M; m++) {
+
+                if (n == 0 || m == 0) {
+                    dp[n][m] = 0;
+                    continue;
+                }
+
+                if (s1.charAt(n - 1) == s2.charAt(m - 1))
+                    dp[n][m] = dp[n - 1][m - 1] + 1;
+                else
+                    dp[n][m] = Math.max(dp[n - 1][m], dp[n][m - 1]);
+            }
+        }
+
+        return dp[N][M];
+    }
+
+    // public int longestPalindromeSubseq(String s) {
+    //     int n = s.length();
+    //     int[][] dp = new int[n][n];
+    //     return lpss(s, 0, n - 1, dp);
+    // }
 }
