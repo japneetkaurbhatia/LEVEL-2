@@ -216,7 +216,7 @@ public class l001_TwoPointer {
 
         int maxGold = 0;
         for (int r = 0; r < n; r++) {
-            maxGold = Math.max(maxGold, goldMine_memo_(r, 0, mat, dir, dp));
+            maxGold = Math.max(maxGold, golde_memo_(r, 0, mat, dir, dp));
         }
 
         return maxGold;
