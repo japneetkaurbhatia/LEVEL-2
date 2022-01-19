@@ -1,8 +1,3 @@
-Data Structure And Algorithm Level 2
-LeetCode
-
-1. Recusrion
+# LEVEL-2 DSA
+1. Recursion
 2. Linked List
-3. Trees
-4. Graph
-5. Dp
