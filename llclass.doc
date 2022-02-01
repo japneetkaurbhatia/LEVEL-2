@@ -1,0 +1,422 @@
+LL class 
+
+// CLIENT CLASS
+public class client {
+	Public static void main(String[] args) {
+		linkedlist ll = new linkedlist();
+		System.out.println();
+}
+}
+
+// LINKEDLIST CLASS
+public class linkedlist {
+
+	// NODE CLASS
+	private class Node {
+	int data = 0;
+	Node next = null;
+
+	Node(int data) {
+	this.data = data;
+}
+}
+
+// POINTERS AND BASIC FUNCTIONS 
+private Node head = null;
+private Node tail = null;
+private int sizeOfLL = 0;
+
+public boolean isEmpty() {
+	return this.sizeOfLL == 0;
+}
+
+public int size() {
+	return this.sizeOfLL;
+}
+
+public void display() {
+	Node curr = head;
+	while(curr != null) {
+		System.out.print(curr.data + “ “);
+		curr = curr.next;
+}
+System.out.println();
+}
+
+// EXCEPTIONS	
+private void EmptyException() throws Exception {
+	if(this.sizeOfLL == 0)
+		throw new Exception(“LinkedList is empty”);
+}
+
+private void IndexOutOfBoundInclusiveException(int idx) throws Exception {
+	if(idx < 0 || idx > this.sizeOfLL)
+		throw new Exception(“Index Out Of Bound”);
+}
+
+private void IndexOutOfBoundExclusiveException(int idx) throws Exception {
+	if(idx < 0 || idx >= this.sizeOfLL)
+		throw new Exception(“Index Out Of Bound”);
+}
+
+// GET FUNCTIONS	
+private int getFirst() throws Exception  {
+	EmptyException();
+	return this.head.data;
+}
+
+private int getLast() throws Exception  {
+	EmptyException();
+	return this.tail.data;
+}
+
+private int getAt(int idx) throws Exception  {
+	IndexOutOfBoundExclusiveException(idx);
+	Node node = getNodeAt(idx);
+	return node.data;
+}
+
+private Node getNodeAt(int idx) {
+	Node curr = head;
+	while(idx-- > 0) {
+		curr = curr.next;
+}
+return curr;
+}
+
+// ADD FUNCTIONS	
+private void addFirstNode(Node node) {
+	if(this.head == null) {
+		this.head = node;
+		this.tail = node;
+} else {
+	node.next = this.head;
+	this.head = node;
+}
+this.sizeOfLL++;
+}
+
+public void addFirst(int data) {
+	Node node = new Node(data);
+	addFirstNode(node);
+}
+
+private void addLastNode(Node node) {
+	if(this.tail == null) {
+		this.tail = this.head = node;
+} else {
+	this.tail.next = node;
+	this.tail = node;
+}
+this.sizeOfLL++;
+}
+
+public void addLast(int data) {
+	Node node = new Node(data);
+	addLastNode(node);
+}
+
+private void addAtNode(Node node,int idx) {
+	if(idx == 0) addFirstNode(node);
+	else if(idx == this.sizeOfLL) addLastNode(node);
+	else {
+		Node prev = getNodeAt(idx - 1);
+		Node forw = prev.next;
+		
+		prev.next = node;
+		node.next = forw;
+
+		this.sizeOfLL++;
+}
+}
+
+public void addAt(int idx, int data) throws Exception {
+	IndexOutOfBoundInclusiveException(idx);
+	Node node = new Node(data);
+	addAtNode(node, data);
+}
+
+// REMOVE FUNCTIONS	
+private Node removeFirstNode() {
+	Node rNode = this.head;
+	if(this.sizeOfLL == 1) {
+		this.head = null;
+		this.tail = null;
+} else {
+	Node forw = this.head.next;
+	rNode.next = null;
+	this.head = forw;
+}
+this.sizeOfLL–;
+return rNode;
+}
+public int removeFirst() throws Exception {
+	EmptyException();
+	Node node = removeFirstNode();
+	return node.data;
+}
+
+private Node removeLastNode() {
+	Node rNode = this.head;
+	if(this.sizeOfLL == 1) {
+		this.head = null;
+		this.tail = null;
+} else {
+	Node prev = getNodeAt(this.sizeOfLL - 2);
+	prev.next = null;
+	this.tail = prev;
+}
+this.sizeOfLL–;
+return rNode;
+}
+
+public int removeLast() throws Exception {
+	EmptyException();
+	Node node = removeLastNode();
+	return node.data;
+}
+
+private Node removeAtNode(int idx) {
+	if(idx == 0)
+		return removeFirstNode();
+	else if(idx == this.sizeOfLL - 1)
+		return removeLastNode();
+	else {
+		Node prev = getAtNode(idx - 1);
+		Node curr = prev.next;
+		Node forw = curr.next;
+
+		prev.next = forw;
+		curr.next = null;
+
+		this.sizeOfLL–;
+		return curr;
+}
+}
+
+public int removeAt(int idx) throws Exception {
+	EmptyException();
+	IndexOutOfBoundExclusiveException(idx);
+	Node node = removeAtNode(idx);
+	return node.data
+}
+}
+
+// CLIENT INITIATE CLASS
+private class client {
+	public static void main(String[] args) throws Exception{
+	linkedlist ll = new linkedlist();
+	for(int i = 1; i <= 10; i++) {
+		ll.addLast(i*10);
+}
+ll.display();
+ll.getLast();
+}
+}
+
+
+
+// Anagrams
+public static boolean isAnagram(String a,String b) {
+	if(a.length() != b.length()) return false;
+	
+	int[] freq = new int[26];
+	for(int i = 0; i < a.length(); i++) {
+	freq[ a.charAt(i) - ‘a’]++;
+	freq[ b.charAt(i) - ‘a’]--;
+}
+
+for(int i = 0; i < 26; i++) {
+	if(freq[i] != 0) return false;
+}
+return true;
+ }
+
+
+
+
+
+//Target Sum
+static int findTargetSumWays_(int[] A , int idx, int N, int target) {
+	if(idx == N) return target == 0 ? 1 : 0;
+	int count = 0;
+	count += findTargetSumWays_(A, idx + 1, N, target -  A[i]);
+count += findTargetSumWays_(A, idx + 1, N, target - (- A[i]));
+return count;
+}
+
+static int findTargetSumWays(int[] A , int N, int target) {
+	return findTargetSumWays_(A, 0, N, target);
+}
+
+// Valid Parentheses
+public boolean isValid(String s) {
+        Stack<Character> st = new Stack<>();
+        int n = s.length();
+        if(n % 2 != 0) return false;
+        for(int i = 0; i < n; i++) {
+            char ch = s.charAt(i);
+            if(ch == '(' || ch == '[' || ch == '{')
+                st.push(ch);
+            else {
+                if(st.size() == 0) return false;
+                if(ch == ')' && st.peek() != '(') return false;
+                else if(ch == '}' && st.peek() != '{') return false;
+                else if(ch == ']' && st.peek() != '[') return false;
+                else st.pop();
+            }
+        }
+        return st.size() == 0;
+    }
+
+//Merge 2 Sorted Array Without Extra Space
+public static void merge(long arr1[], long arr2[], int n, int m) {
+        // code here 
+	long[] res = new long[n+m];
+	int i = 0, j = 0, k = 0;
+	while(i < n && j < m) {
+		if(arr1[i] <= arr2[j]) 
+			res[k++] = arr1[i++];
+		else
+			res[k++] = arr2[j++];
+}
+while(i < n)
+		res[k++] = arr1[i++];
+
+while(j < m)
+		res[k++] = arr2[j++];
+
+for(int p = 0; p < n; p++) 
+		arr1[p] = res[p];
+for(int p = n; p < m+n; p++)
+		arr2[p - n] = res[p];
+    	}
+}
+
+//SIEVE OF ERATHOSIS
+public static void printPrimeUsingSieves(int n) {
+	int[] primeArr= new int[n+1];
+	Arrays.fill(primeArr, true);
+
+		for(int i = 2; i * i <= n; i++) {
+			if(!primeArr[i]) continue;
+			for(int j = i + i; j <= n; j+=i) {
+				primeArr[j] = false;
+}
+}
+
+for(int i = 2; i * i <= n; i++)
+	if(primeArr[i]) 
+		System.out.println(i);
+}
+
+//LEVEL ORDER
+static ArrayList <Integer> levelOrder(Node node) 
+{
+        ArrayList<Integer> ans = new ArrayList<>();
+        LinkedList<Node> que = new LinkedList<>();
+        
+        que.addLast(node);
+        while(que.size() != 0) {
+            int size = que.size();
+            while(size-- > 0) {
+                Node rNode = que.removeFirst();
+                ans.add(rNode.data);
+                if(rNode.left != null) que.add(rNode.left);
+                if(rNode.right != null) que.add(rNode.right);
+            }
+        }
+        
+        return ans;
+
+ }
+
+//left view
+ArrayList<Integer> leftView(Node root)
+    {
+      // Your code here
+      ArrayList<Integer> ans = new ArrayList<>();
+       if(root == null) {
+          return ans;
+      }
+     
+      LinkedList<Node> que = new LinkedList<>();
+      que.addLast(root);
+      
+      while(que.size() != 0) {
+          int size = que.size();
+          ans.add(que.getFirst().data);
+          while(size-- > 0) {
+              Node rNode = que.removeFirst();
+              if(rNode.left != null)    que.addLast(rNode.left);
+              if(rNode.right != null)    que.addLast(rNode.right);
+          }
+      }
+      return ans;
+    }
+
+// wiggle sort
+I: 1,5,1,1,6,4
+O: 
+
+public void wiggle(int[] nums) {
+Arrays.sort(nums);
+int n = nums.length;
+int[] res = new int[n];
+int idx = n - 1;
+for(int i = 1; i < n; i+=2)
+	res[i] = nums[idx–];
+for(int i = 0; i < n; i+=2)
+	res[i] = nums[idx–];
+for(int i = 0; i < n; i++) 
+	nums[i] = res[i];
+}
+
+//kth largest
+public void swap(int[] arr, int i, int j) {
+	int temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+}
+public void downHeapify(int[] arr, int pi, int li) {
+	int maxIdx = pi;
+	int lci = 2*pi + 1;
+	int rci = 2*pi + 2;
+
+	if(lci <= li && arr[lci] > arr[pi]) maxIdx = lci;
+	if(rci <= li && arr[rci] > arr[pi]) maxIdx = rci;
+
+	if(maxIdx != pi) {
+		swap(arr, pi, maxIdx);
+		downHeapify(arr, maxIdx, li);
+}
+}
+public int findKthLargest(int[] nums, int k) {
+        int n = nums.length;
+        for(int i = n - 1; i >= 0; i--) {
+	downHeapify(nums, i, n - 1);
+        }
+        int li = n - 1;
+        while(k-- > 0) {
+	swap(nums, 0, li--);
+	downHeapify(nums, 0, li);
+       }
+	return nums[0];
+    }
+
+// K largest
+int[] kLargest(int[] arr, int n, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int ele : arr) {
+	pq.add(ele);
+if(pq.size() > k) pq.remove;
+}
+
+int[] res = new int[k];
+int i = 0;
+while(pq.size() != 0) {
+	int r = pq.peek();
+	res[i++] = r;
+}
+return res;
+    }
+
+
