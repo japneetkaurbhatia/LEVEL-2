@@ -192,4 +192,95 @@ class GFG {
 	}
 }
 
-memoization
+5. Min subset sum diff
+
+class Solution
+{
+    public void subsetSum(int[] arr, int n, int sum, boolean[][] dp) {
+        for(int i = 0; i < n + 1; i++) {
+            for(int j = 0; j < sum + 1; j++) {
+                if(i == 0) dp[i][j] = false;
+                if(j == 0) dp[i][j] = true;
+            }   
+        }
+        
+        for(int i = 1; i < n + 1; i++) {
+            for(int j = 1; j < sum + 1; j++){
+                if(arr[i - 1] <= j) {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - arr[i - 1]];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            } 
+        }
+        
+        return;
+    }
+
+	public int minDifference(int nums[], int n) 
+	{ 
+	    // Your code goes here
+	   // int n = nums.length;
+        int lo = 0;
+        int hi = 0;
+        for(int num : nums) hi += num;
+        int mid = (hi - lo)/2;
+        boolean[][] dp = new boolean[n + 1][hi + 1];
+        for(int i = 0; i < n + 1; i++) {
+            for(int j = 0; j < hi + 1; j++) {
+                dp[i][j] = false;
+            }
+        }
+        subsetSum(nums, n, hi, dp);
+        ArrayList<Integer> al = new ArrayList<>();
+        for(int i = 0; i <= mid; i++) if(dp[n][i] == true) al.add(i);
+        int res = (int)1e9;
+        for(int i = 0; i < al.size(); i++) {
+            res = Math.min(res,Math.abs(2*al.get(i) - hi));
+        }
+        return res;
+	} 
+}
+
+6. count of subset with given diff
+
+/*package whatever //do not write package name here */
+
+import java.io.*;
+import java.util.*;
+
+class GFG {
+    public static Scanner scn = new Scanner(System.in);
+    public static int countOfSubsets_(int[] arr, int n, int sum, int[][] dp) {
+        if(n == 0 && sum == 0) return dp[n][sum] = 1;
+        if(sum == 0) return dp[n][sum] = 1;
+        if(n == 0) return dp[n][sum] = 0;
+        if(dp[n][sum] != -1) return dp[n][sum];
+        if(arr[n - 1] <= sum) {
+            return dp[n][sum] = countOfSubsets_(arr, n - 1, sum, dp) + countOfSubsets_(arr, n - 1, sum - arr[n - 1], dp);
+        } else {
+            return dp[n][sum] = countOfSubsets_(arr, n - 1, sum, dp);
+        }
+    }
+    public static int countOfSubsets(int[] arr, int n , int diff) {
+        int sum = 0;
+        for(int a : arr) sum += a;
+        int s = (diff + sum)/2;
+        int[][] dp = new int[n + 1][s + 1];
+        // Arrays.fill(dp, -1);
+        for(int i = 0; i < n + 1; i++) {
+            for(int j = 0; j < s + 1; j++) {
+                dp[i][j] = -1;
+            }
+        }
+        return countOfSubsets_(arr, n, s, dp);
+    }
+	public static void main (String[] args) {
+	    int arr[] = {2, 3, 5, 6, 8, 10};
+	    int diff = 2;
+	    int n = arr.length;
+	    int res = countOfSubsets(arr, n, diff);
+		System.out.println(res);
+	}
+}
+
