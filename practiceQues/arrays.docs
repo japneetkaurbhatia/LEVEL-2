@@ -1,0 +1,30 @@
+// 3sum
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+    int n = nums.length;
+    List<List<Integer>> res = new ArrayList<>();
+        if(n == 0) return res;
+    for(int i = 0; i < n - 2; i++) {
+        if(i == 0 || (i > 0 && nums[i] != nums[i-1])) {
+            int lo = i + 1;
+            int hi = n - 1;
+            int sum = 0 - nums[i];
+            while(lo < hi) {
+                int csum = nums[lo] + nums[hi];
+                if(csum == sum) {
+                    List<Integer> smallRes = new ArrayList<>();
+                    smallRes.add(nums[i]);
+                    smallRes.add(nums[lo]);
+                    smallRes.add(nums[hi]);
+                    res.add(smallRes);
+                    while(lo < hi && nums[lo] == nums[lo+1]) lo++;
+                    while(lo < hi && nums[hi] == nums[hi-1]) hi--;
+                    lo++;
+                    hi--;
+                } else if(csum > sum) hi--;
+                else lo++;
+            }
+        }
+    } 
+    return res;
+    }       
